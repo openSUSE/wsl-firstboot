@@ -48,7 +48,10 @@ on_all_consoles() {
 	# Needed to tell apart errors and escape
 	export DIALOG_ERROR=254
 	# The linux fbcon uses this, most serial consoles should be fine too
-	export TERM=linux
+	# 20250702 smb: this causes encoding issue on Win10 cmd.exe
+	#               changing from 'linux' to 'xterm' (boo#1237756)
+	#export TERM=linux
+	export TERM=xterm
 
 	# Create a FIFO for communicating the status
 	fifodir="$(mktemp -d)"
