@@ -100,7 +100,7 @@ user_systemd_firstboot()
 	user_do_config
 }
 
-user_jeos_config()
+user_wsl_config()
 {
 	user_do_config
 }

@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 
 [Unit]
-Description=SUSE JeOS First Boot Wizard - create system snapshot
+Description=SUSE WSL First Boot Wizard - create system snapshot
 
 # Same as YaST2-Firstboot.service here
 After=apparmor.service local-fs.target plymouth-start.service YaST2-Second-Stage.service
@@ -13,18 +13,18 @@ ConditionPathExists=/var/lib/YaST2/reconfig_system
 # The configuration is already done - so this doesn't make much sense
 #OnFailure=poweroff.target
 
-# jeos-firstboot-snapshot starts after jeos-firstboot, time got synced
+# wsl-firstboot-snapshot starts after wsl-firstboot, time got synced
 # and dbus became available
 Wants=time-sync.target
-Requires=jeos-firstboot.service dbus.service
-After=jeos-firstboot.service time-sync.target
+Requires=wsl-firstboot.service dbus.service
+After=wsl-firstboot.service time-sync.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
 # In Pre - if creation fails, don't do the configuration again
 ExecStartPre=/usr/bin/rm -f /var/lib/YaST2/reconfig_system
-ExecStart=/usr/sbin/jeos-firstboot-snapshot
+ExecStart=/usr/sbin/wsl-firstboot-snapshot
 
 [Install]
 WantedBy=default.target

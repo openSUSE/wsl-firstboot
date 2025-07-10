@@ -94,14 +94,14 @@ on_all_consoles() {
 	return "$status"
 }
 
-# If JEOS_ASK_CONSOLE is not 0, show the "welcome" screen and switch to the
+# If WSL_ASK_CONSOLE is not 0, show the "welcome" screen and switch to the
 # console where it was acked on.
 welcome_screen_with_console_switch() {
-	[ "${JEOS_ASK_CONSOLE-0}" -eq "0" ] && return 0
+	[ "${WSL_ASK_CONSOLE-0}" -eq "0" ] && return 0
 
 	# Only ask once
-	[ "${JEOS_CONSOLE_ASKED-0}" -eq "1" ] && return 0
-	export JEOS_CONSOLE_ASKED=1
+	[ "${WSL_CONSOLE_ASKED-0}" -eq "1" ] && return 0
+	export WSL_CONSOLE_ASKED=1
 
 	while true; do
 		ret=0

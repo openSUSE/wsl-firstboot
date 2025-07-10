@@ -32,8 +32,8 @@ modules=()
 
 _find_modules() {
 	local f
-	#for f in /etc/jeos-firstboot/modules/* "${jeos_prefix?}/share/jeos-firstboot/modules"/*; do
-	for f in /etc/jeos-firstboot/modules/* "/usr/share/jeos-firstboot/modules"/*; do
+	#for f in /etc/wsl-firstboot/modules/* "${wsl_prefix?}/share/wsl-firstboot/modules"/*; do
+	for f in /etc/wsl-firstboot/modules/* "/usr/share/wsl-firstboot/modules"/*; do
 		if [ -L "$f" ] || [ -f "$f" ]; then
 			echo "${f##*/}" "$f"
 		fi
@@ -96,7 +96,7 @@ call_module_hook() {
 	return 0
 }
 
-# Run dialog with jeos-firstboot style options applied
+# Run dialog with wsl-firstboot style options applied
 d_styled() {
 	dialog --backtitle "$PRETTY_NAME" "$@"
 }
@@ -182,16 +182,16 @@ get_current_locale()
 
 apply_locale()
 {
-	if [ ! -z "$JEOS_LOCALE" ]; then
-		run langset.sh "$JEOS_LOCALE" || warn $"Setting the locale failed"
+	if [ ! -z "$WSL_LOCALE" ]; then
+		run langset.sh "$WSL_LOCALE" || warn $"Setting the locale failed"
 	fi
 }
 
 apply_locale_and_keytable()
 {
-	if [ ! -z "$JEOS_LOCALE" -a ! -z "$JEOS_KEYTABLE" ]; then
+	if [ ! -z "$WSL_LOCALE" -a ! -z "$WSL_KEYTABLE" ]; then
 		# Activate the selected keyboard layout
-		run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
+		run langset.sh "$WSL_LOCALE" "$WSL_KEYTABLE" || warn $"Setting the keyboard layout failed"
 	fi
 }
 

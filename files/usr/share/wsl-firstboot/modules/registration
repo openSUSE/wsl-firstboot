@@ -64,14 +64,14 @@ registration_do_config()
 
 registration_systemd_firstboot()
 {
-  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${WSL_HIDE_SUSECONNECT}" ]; then
 	  registration_do_config
   fi
 }
 
-registration_jeos_config()
+registration_wsl_config()
 {
-  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${WSL_HIDE_SUSECONNECT}" ]; then
 	  registration_do_config
   fi
 }

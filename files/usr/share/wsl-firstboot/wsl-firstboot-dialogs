@@ -29,7 +29,7 @@ dialog_locale()
 		newlocale="${result}"
 	fi
 
-	JEOS_LOCALE="${newlocale}.UTF-8"
+	WSL_LOCALE="${newlocale}.UTF-8"
 }
 
 dialog_keytable()
@@ -41,7 +41,7 @@ dialog_keytable()
 	if findkeymaps \
 		&& d --default-item "$default" --menu  $"Select keyboard layout" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"; then
 		if [ -n "$result" ]; then
-			JEOS_KEYTABLE="$result"
+			WSL_KEYTABLE="$result"
 		fi
 	else
 		d --msgbox $"Error setting keyboard" 5 26
@@ -59,7 +59,7 @@ dialog_timezone()
 		/usr/share/zoneinfo/zone.tab \
 		&& d --default-item "$default" --menu $"Select time zone" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"; then
 			if [ -n "$result" ]; then
-				JEOS_TIMEZONE="$result"
+				WSL_TIMEZONE="$result"
 			fi
 	else
 		d --msgbox $"Error setting timezone" 5 26

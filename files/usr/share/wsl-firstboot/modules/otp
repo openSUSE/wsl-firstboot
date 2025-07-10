@@ -146,7 +146,7 @@ if command -v oathtool >/dev/null && command -v qrencode >/dev/null; then
 		_otp_do_config
 	}
 
-	otp_jeos_config()
+	otp_wsl_config()
 	{
 		_otp_do_config --msg-if-no-users
 	}

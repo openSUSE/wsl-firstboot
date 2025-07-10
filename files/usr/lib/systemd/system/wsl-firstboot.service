@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 
 [Unit]
-Description=SUSE JeOS First Boot Wizard
+Description=SUSE WSL First Boot Wizard
 
 # Same as YaST2-Firstboot.service here
 After=apparmor.service local-fs.target plymouth-start.service YaST2-Second-Stage.service
@@ -12,7 +12,7 @@ Before=display-manager.service
 ConditionPathExists=/var/lib/YaST2/reconfig_system
 OnFailure=poweroff.target
 
-# jeos-firstboot starts before wicked and login though.
+# wsl-firstboot starts before wicked and login though.
 # It writes wicked configuration manually
 Before=wicked.service systemd-user-sessions.service
 # For NM it uses nmcli, so NM needs to be running
@@ -22,15 +22,15 @@ After=NetworkManager.service
 # to check whether it performed any configuration.
 After=cloud-init-local.service
 
-# jeos-firstboot-snapshot.service deletes the flag file, but starts after us
-Wants=jeos-firstboot-snapshot.service
+# wsl-firstboot-snapshot.service deletes the flag file, but starts after us
+Wants=wsl-firstboot-snapshot.service
 
 [Service]
 Type=oneshot
 Environment=TERM=linux
 RemainAfterExit=yes
 ExecStartPre=/bin/sh -c "/usr/bin/plymouth quit 2>/dev/null || :"
-ExecStart=/usr/sbin/jeos-firstboot
+ExecStart=/usr/sbin/wsl-firstboot
 StandardOutput=tty
 StandardInput=tty
 #StandardError=tty

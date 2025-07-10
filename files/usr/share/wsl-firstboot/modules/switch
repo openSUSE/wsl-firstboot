@@ -67,14 +67,14 @@ switch_do_config()
 
 switch_systemd_firstboot()
 {
-  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${WSL_HIDE_SUSECONNECT}" ]; then
 	  switch_do_config
   fi
 }
 
-switch_jeos_config()
+switch_wsl_config()
 {
-  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+  if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${WSL_HIDE_SUSECONNECT}" ]; then
 	  switch_do_config
   fi
 }

@@ -4,26 +4,26 @@
 
 set -e
 
-#jeos_prefix="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")"
+#wsl_prefix="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")"
 
-TEXTDOMAIN='jeos-firstboot'
+TEXTDOMAIN='wsl-firstboot'
 
 # shellcheck source-path=SCRIPTDIR/../
-#. "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-functions"
-. "/usr/share/jeos-firstboot/jeos-firstboot-functions"
+#. "${wsl_prefix}/share/wsl-firstboot/wsl-firstboot-functions"
+. "/usr/share/wsl-firstboot/wsl-firstboot-functions"
 # shellcheck source-path=SCRIPTDIR/../
-#. "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-dialogs"
-. "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
+#. "${wsl_prefix}/share/wsl-firstboot/wsl-firstboot-dialogs"
+. "/usr/share/wsl-firstboot/wsl-firstboot-dialogs"
 # shellcheck source-path=SCRIPTDIR/../
-#. "${jeos_prefix}/share/jeos-firstboot/welcome-screen"
-. "/usr/share/jeos-firstboot/welcome-screen"
+#. "${wsl_prefix}/share/wsl-firstboot/welcome-screen"
+. "/usr/share/wsl-firstboot/welcome-screen"
 
 # Read the optional configuration file
 # shellcheck source-path=SCRIPTDIR/../
-#[ -f "${jeos_prefix}/share/defaults/jeos-firstboot.conf" ] && . "${jeos_prefix}/share/defaults/jeos-firstboot.conf"
-[ -f "/usr/share/defaults/jeos-firstboot.conf" ] && . "/usr/share/defaults/jeos-firstboot.conf"
+#[ -f "${wsl_prefix}/share/defaults/wsl-firstboot.conf" ] && . "${wsl_prefix}/share/defaults/wsl-firstboot.conf"
+[ -f "/usr/share/defaults/wsl-firstboot.conf" ] && . "/usr/share/defaults/wsl-firstboot.conf"
 # shellcheck source=/dev/null
-[ -f /etc/jeos-firstboot.conf ] && . /etc/jeos-firstboot.conf
+[ -f /etc/wsl-firstboot.conf ] && . /etc/wsl-firstboot.conf
 
 # for testing we may run as non root
 if [ -w /run ]; then
@@ -38,7 +38,7 @@ else
 fi
 
 if [ -e /run/cloud-init/enabled ] && ! grep -qw none /run/cloud-init/cloud-id; then
-  echo $"System configured with cloud-init, skipping jeos-firstboot"
+  echo $"System configured with cloud-init, skipping wsl-firstboot"
   exit 0
 fi
 
@@ -84,14 +84,14 @@ systemd_firstboot_args=()
 
 # If the configuration is not loaded and we are in the first terminal
 # instance, make sure that the variables are declared.
-JEOS_LOCALE=${JEOS_LOCALE-}
-JEOS_KEYTABLE=${JEOS_KEYTABLE-}
+WSL_LOCALE=${WSL_LOCALE-}
+WSL_KEYTABLE=${WSL_KEYTABLE-}
 
 # If there is only a single locale on the system, don't use its
 # default timezone but UTC instead.
 use_utc_as_default_tz=0
 
-if [ -z "$JEOS_LOCALE" ] && ! get_credential JEOS_LOCALE firstboot.locale; then
+if [ -z "$WSL_LOCALE" ] && ! get_credential WSL_LOCALE firstboot.locale; then
   welcome_screen_with_console_switch
   dialog_locale
 
@@ -104,9 +104,9 @@ fi
 # Activate the locale selected
 apply_locale
 # also add to systemd-firstboot parameters
-systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
+systemd_firstboot_args+=("--locale=$WSL_LOCALE")
 
-if [ -z "$JEOS_KEYTABLE" ] && ! get_credential JEOS_KEYTABLE firstboot.keymap; then
+if [ -z "$WSL_KEYTABLE" ] && ! get_credential WSL_KEYTABLE firstboot.keymap; then
   welcome_screen_with_console_switch
   dialog_keytable
 fi
@@ -120,9 +120,9 @@ if [ "$use_utc_as_default_tz" -eq "1" ]; then
   ln -s /usr/share/zoneinfo/UTC /etc/localtime
 fi
 
-[ -n "$JEOS_LOCALE" ] && language="${JEOS_LOCALE%%_*}" || language="en"
+[ -n "$WSL_LOCALE" ] && language="${WSL_LOCALE%%_*}" || language="en"
 force_english_license=0
-export LANG="$JEOS_LOCALE"
+export LANG="$WSL_LOCALE"
 
 kmscon_available() {
   # kmscon itself is installed
@@ -150,8 +150,8 @@ if [[ "$(resolve_tty "$(tty)")" =~ /dev/tty[0-9]+ ]]; then
   start_kmscon["ko"]=1
 
   # Relay those settings to the nested instance
-  export JEOS_LOCALE JEOS_KEYTABLE
-  if [ -n "$JEOS_LOCALE" -a -n "${start_kmscon[${language}]+_}" ]; then
+  export WSL_LOCALE WSL_KEYTABLE
+  if [ -n "$WSL_LOCALE" -a -n "${start_kmscon[${language}]+_}" ]; then
     if kmscon_available; then
       ret_file="$(mktemp)"
       kmscon --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
@@ -169,7 +169,7 @@ if [[ "$(resolve_tty "$(tty)")" =~ /dev/tty[0-9]+ ]]; then
   fi
 fi
 
-if [ -z "$JEOS_EULA_ALREADY_AGREED" ] && ! get_credential JEOS_EULA_ALREADY_AGREED firstboot.license-agreed; then
+if [ -z "$WSL_EULA_ALREADY_AGREED" ] && ! get_credential WSL_EULA_ALREADY_AGREED firstboot.license-agreed; then
   welcome_screen_with_console_switch
 
   # Find the location of the EULA
@@ -184,8 +184,8 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ] && ! get_credential JEOS_EULA_ALREADY_AGRE
   fi
 
   if [ "$force_english_license" = "0" ]; then
-    for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
-      "${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
+    for i in "${EULA_FILE%.txt}.${WSL_LOCALE}.txt" \
+      "${EULA_FILE%.txt}.${WSL_LOCALE%%.UTF-8}.txt" \
       "${EULA_FILE%.txt}.${language}.txt"; do
       if [ -e "$i" ]; then
         EULA_FILE="$i"
@@ -202,25 +202,25 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ] && ! get_credential JEOS_EULA_ALREADY_AGRE
   done
 fi
 
-if [ -z "$JEOS_TIMEZONE" ] && ! get_credential JEOS_TIMEZONE firstboot.timezone; then
+if [ -z "$WSL_TIMEZONE" ] && ! get_credential WSL_TIMEZONE firstboot.timezone; then
   welcome_screen_with_console_switch
   dialog_timezone
 fi
 
-systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
+systemd_firstboot_args+=("--timezone=$WSL_TIMEZONE")
 
 # systemd-firstboot does not set the timezone if it exists, langset.sh created it
 run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
-if [ -z "$JEOS_PASSWORD_ALREADY_SET" ] && ! get_credential password passwd.plaintext-password.root; then
+if [ -z "$WSL_PASSWORD_ALREADY_SET" ] && ! get_credential password passwd.plaintext-password.root; then
   welcome_screen_with_console_switch
   dialog_password
 fi
 
 # Only show the registration prompt on commercial distros and if it's not
 # globally disabled. Can't use /etc/products.d/ for that, even TW has a register target.
-# if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+# if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${WSL_HIDE_SUSECONNECT}" ]; then
 #   if [ -x /usr/bin/SUSEConnect ] && [ -x /usr/sbin/transactional-update ]; then
 #     welcome_screen_with_console_switch
 #     d --msgbox $"Please register this image using your existing SUSE entitlement.

@@ -98,7 +98,7 @@ status_mail_do_config()
 
 # Only show the configuration if the package is installed
 if [ -e /usr/lib/systemd/system/systemd-status-mail@.service ]; then
-	status_mail_jeos_config()
+	status_mail_wsl_config()
 	{
 		status_mail_do_config
 	}

@@ -4,7 +4,7 @@
 
 # Only show the configuration if the package is installed
 if command -v ssh-pairing >/dev/null; then
-	ssh_enroll_jeos_config()
+	ssh_enroll_wsl_config()
 	{
 		DIALOGOPTS="--backtitle \"$PRETTY_NAME\"" ssh-pairing || :
 	}
