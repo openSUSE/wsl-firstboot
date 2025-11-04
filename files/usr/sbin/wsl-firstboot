@@ -265,3 +265,8 @@ if ! [ -f "$EFI_SYSTAB" ]; then
 fi
 
 call_module_hook post
+
+### 20251104: Let the 'Applying firstboot settings ...' infobox display,
+###   then clear the screen
+sleep 5 && /usr/bin/clear
+#####

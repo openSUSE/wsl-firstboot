@@ -15,30 +15,31 @@ user_do_config()
 	# Loop until cancelled or successfully completed.
 	while true; do
 		local msg="$(
-			echo $"If desired, create an additional user account."
 			echo $"This is necessary for password-based SSH login and the Cockpit Web UI."
+			echo $""
+			echo $"REQUIRED; create a user account."
 		)"
 
+#			--cancel-label $"Skip" \
 		d_with_result --title $"User Creation" \
 			--insecure \
-			--cancel-label $"Skip" \
 			--mixedform "${msg}" 9 0 5 \
 			$"Username" 1 0 "$username" 1 18 35 0 0 \
 			$"Full name" 2 0 "$fullname" 2 18 35 0 0 \
 			$"Password" 4 0 "" 4 18 35 0 1 \
 			$"Password (again)" 5 0 "" 5 18 35 0 1
 
-		local ret=$?
-		if [ "$ret" -eq 1 ]; then
-			# Skip button pressed
-			return 0
-		elif [ "$ret" -eq 255 ]; then
-			# ESC
-			if d_styled --yesno $"Do you really want to quit?" 0 0; then
-				exit 1
-			fi
-			continue
-		fi
+#		local ret=$?
+#		if [ "$ret" -eq 1 ]; then
+#			# Skip button pressed
+#			return 0
+#		elif [ "$ret" -eq 255 ]; then
+#			# ESC
+#			if d_styled --yesno $"Do you really want to quit?" 0 0; then
+#				exit 1
+#			fi
+#			continue
+#		fi
 
 		readarray -t input <<<"$result"
 

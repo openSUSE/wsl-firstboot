@@ -2,6 +2,18 @@
 # SPDX-FileCopyrightText: Copyright 2024 SUSE LLC
 # shellcheck shell=bash
 
+### 20251104: disable switch module for SLE16.0
+###   Leave a note in /tmp about switch being skipped
+unset VERSION
+. /etc/os-release
+#export VERSION='15SP7'
+if [[ "$VERSION" =~ ^16.* ]];
+then
+	printf "VERSION: '$VERSION' (%s)\n" "$(date)" >> /tmp/skip-switch.txt
+	continue
+fi
+#####
+
 switch_title=$"Switch"
 switch_description=$"Allow switch during firstboot"
 switch_priority=40
