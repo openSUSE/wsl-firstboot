@@ -4,13 +4,18 @@
 
 ### 20251104: disable switch module for SLE16.0
 ###   Leave a note in /tmp about switch being skipped
+### 20251108: also 'continue' for Leap, so wsl-config doesn't list
+###   'switch' as an option
 unset VERSION
 . /etc/os-release
 #export VERSION='15SP7'
-if [[ "$VERSION" =~ ^16.* ]];
+if [[ "$VERSION" =~ ^16.* ]] && [[ "$ID" == "sles" ]];
 then
-	printf "VERSION: '$VERSION' (%s)\n" "$(date)" >> /tmp/skip-switch.txt
+	printf "VERSION: '$VERSION', ID: '$ID' (%s)\n" "$(date)" >> /tmp/skip-switch.txt
 	continue
+elif [[ "$ID" == "opensuse-leap" ]];
+then
+  continue
 fi
 #####
 
