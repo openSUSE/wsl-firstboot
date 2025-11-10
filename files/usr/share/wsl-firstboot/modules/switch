@@ -11,9 +11,9 @@ unset VERSION
 #export VERSION='15SP7'
 if [[ "$VERSION" =~ ^16.* ]] && [[ "$ID" == "sles" ]];
 then
-	printf "VERSION: '$VERSION', ID: '$ID' (%s)\n" "$(date)" >> /tmp/skip-switch.txt
-	continue
-elif [[ "$ID" == "opensuse-leap" ]];
+  printf "VERSION: '$VERSION', ID: '$ID' (%s)\n" "$(date)" >> /tmp/skip-switch.txt
+  continue
+elif [[ "$ID" == "opensuse-leap" ]] || [[ "$ID" == "opensuse-tumbleweed" ]];
 then
   continue
 fi
