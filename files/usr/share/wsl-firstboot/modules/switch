@@ -6,6 +6,7 @@
 ###   Leave a note in /tmp about switch being skipped
 ### 20251108: also 'continue' for Leap, so wsl-config doesn't list
 ###   'switch' as an option
+### 20251110: And Tumbleweed
 unset VERSION
 . /etc/os-release
 #export VERSION='15SP7'

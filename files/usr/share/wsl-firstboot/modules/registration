@@ -2,6 +2,17 @@
 # SPDX-FileCopyrightText: Copyright 2024 SUSE LLC
 # shellcheck shell=bash
 
+### 20251110: 'continue' for Leap/Tumbleweed, so wsl-config doesn't list
+###   'registration' as an option
+unset VERSION
+. /etc/os-release
+#export VERSION='15SP7'
+if [[ "$ID" == "opensuse-leap" ]] || [[ "$ID" == "opensuse-tumbleweed" ]];
+then
+  continue
+fi
+#####
+
 registration_title=$"Registration"
 registration_description=$"Allow registration during firstboot"
 registration_priority=50
